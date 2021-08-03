@@ -1,0 +1,178 @@
+---DDL
+
+---Creating Customers tables
+
+DROP TABLE customers;
+CREATE TABLE  customers(
+cust_id INTEGER NOT NULL PRIMARY KEY,
+fname VARCHAR(20) NOT NULL, 
+mname VARCHAR(20),
+lname VARCHAR(20) NOT NULL,
+gender VARCHAR(10),
+email VARCHAR(50), 
+phone_no INTEGER,
+house_no INTEGER, 
+street_name VARCHAR(50),
+post_code VARCHAR(10), 
+city VARCHAR(20),
+county VARCHAR(50), 
+country VARCHAR(50)
+);
+
+
+ 
+---Creating Jobs tables
+
+DROP TABLE jobs;
+CREATE TABLE jobs(
+job_id INT NOT NULL PRIMARY KEY,
+cust_id INT NOT NULL,
+start_date DATE,
+end_date DATE,
+FOREIGN KEY (cust_id) REFERENCES customers(cust_id)
+);
+
+
+
+---Creating Standard Tasks tables
+
+DROP TABLE standard_tasks;
+CREATE TABLE standard_tasks(
+task_id INT NOT NULL PRIMARY KEY,
+task_name VARCHAR(50),	
+task_price FLOAT,	
+task_desc VARCHAR(50)
+);	
+
+
+---Creating order_items tables
+
+DROP TABLE order_items;
+CREATE TABLE order_items(
+item_id INT NOT NULL PRIMARY KEY,
+job_id INT NOT NULL,
+task_id INT NOT NULL,
+item_name VARCHAR(20),
+qty INT,
+cost FLOAT,
+FOREIGN KEY (job_id ) REFERENCES jobs(job_id ),
+FOREIGN KEY (task_id ) REFERENCES standard_tasks(task_id )
+);
+
+
+---Creating invoices tables
+
+DROP TABLE invoices;
+CREATE TABLE invoices(
+invoice_no INT NOT NULL PRIMARY KEY,
+job_id INT NOT NULL,
+item_id INT NOT NULL,
+invoice_date DATE,
+FOREIGN KEY (job_id ) REFERENCES jobs(job_id ),
+FOREIGN KEY (item_id) REFERENCES order_items(item_id )
+);
+
+ 
+
+
+--- DML
+
+---Populate customers table
+/* */
+
+INSERT INTO customers VALUES (1001,  "John  " , "Millar ",  "Doe ",  "male " , 
+"johndoe@gmail.com " , 111222 , 12 ,  "Princes street " ,  "E11 5GH " ,  "Edinburgh " ,  
+"city of edinburgh " ,  "United Kingdom "), 
+( 1002,  "Stephen " , "Kinnock ",  "Rutherford ",  "male " , "stephenrutherford@gmail.com ", 
+NULL , 5 ,  "Leith walk " ,  "E5 6DS " ,  "Edinburgh " ,  "city of edinburgh " ,  
+"United Kingdom "), 
+(1003,  "Peter " , "Bush ",  "Willett ",  "male " , "peterwillett@gmail.com " , 2162456 , 
+43 ,  "Sighthill " ,  "E33 5GH " ,  "Edinburgh " ,  "east lothian " ,  "United Kingdom "),
+(1004,  "Edward " , "Yi He ",  "McCaig ",  "male " , "edwardmccaig@gmail.com " , 123654 , 
+5 ,  "Gordon street " ,  "E44 5RA " ,  "Edinburgh " ,  "west lothian " ,  "United Kingdom "),
+(1005,  "Duncan " , "Higgitt ",  "Begg ",  "male " , "duncanbegg@gmail.com " , 1238965 , 54,
+"Leith walk " ,  "E29 7LM " ,  "Edinburgh " ,  "city of edinburgh " ,  "United Kingdom "), 
+(1006,  "Helen " , "Clarke ",  "Thomson ",  "female " , "helenthomson@gmail.com " , 3266985, 
+543 ,  "Sighthill " ,  "E33 LK " ,  "Edinburgh " ,  "east lothian " ,  "United Kingdom "), 
+( 1007,  "Captain " , "Beany ",  "Tyrinne ",  "male " , "captaintyrinne@gmail.com ", 326547,
+NULL ,  "Gordon street " ,  "E86JY " ,  "Edinburgh " ,  "west lothian " , "United Kingdom "),
+(1008,  "Jonathan " , "Tier ",  "Christopher ",  "male " , "jonathanchristopher@gmail.com ",
+NULL , 24 ,  "Leith walk " ,  "E4 6TR " ,  "Edinburgh " ,  "city of edinburgh ","United Kingdom"),
+( 1009,  "Andrew " , "Jordan ",  "Callum ",  "male " , "andrewcallum@gmail.com " , 3625147 ,
+ 99 ,  "Sighthill " ,  "E22 8YT " ,  "Edinburgh " ,  "east lothian " ,  "United Kingdom "), 
+(1010,  "Owen " , "Herbert ",  "Anne ",  "male " , "owenanne@gmail.com " , 9876554 , 8 ,  
+"Gordon street " ,  "E28 BH " ,  "Edinburgh " ,  "west lothian " ,  "United Kingdom ");
+
+
+
+---Populate job table
+/*  */
+
+INSERT INTO jobs VALUES (30, 1004,  "2017-12-29", "2028-03-31"),
+(31, 1002, "2017-04-14", "2023-12-21"),
+(32, 1008, "2016-02-09", "2030-03-13"),(33, 1008, "2016-05-19", "2024-07-17"),
+(34, 1002, "2015-08-31", "2019-08-01"),(35, 1008, "2016-06-04", "2020-10-29"),
+(36, 1009, "2016-02-21", "2028-06-12"),(37, 1002, "2015-08-26", "2024-06-19"),
+(38, 1010, "2016-05-08", "2019-10-20"),(39, 1003, "2015-04-04", "2029-09-17"),
+(40, 1001, "2015-03-22", "2023-08-13"); 
+
+---Populate standard_tasks table
+/*  */
+
+INSERT INTO standard_tasks VALUES (234,  "task_p ", 100,  "service  "),
+(235,  "task_q ", 119,  "material "),
+(236,  "task_r ", 37,  "electrical "),
+(237,  "task_s ", 110,  NULL),
+(238,  "task_u ", 104,  "service  "),
+(239,  "task_v ", 107,  "engineering "),
+(240,  "task_w ", 99,  NULL),
+(241,  "task_x ", 114,  "engineering "),
+(242,  "task_y ", 89,  "material "),
+(243,  "task_z ", 60,  "service  ");
+
+
+
+
+---Populate order_items table
+/*  */
+
+INSERT INTO order_items VALUES
+(1, 32, 240,  "plywood ", 13, 4),
+(2, 36, 235,  "copper_wires ", 9, 11),
+(3, 37, 234,  "washed_sand ", 9, 10),
+(4, 39, 236,  "ceramic_tiles ", 6, 10),
+(5, 40, 241,  "marble ", 8, 3),
+(6, 37, 239,  "frames ", 6, 7),
+(7, 34, 236,  "laptop ", 7, 10),
+(8, 33, 237,  "sockets ", 7, 3),
+(9, 30, 242,  "sinks ", 3, 5),
+(10, 39, 237,  "interior_paint ", 7, 3),
+(11, 38, 238,  "exterior_paint ", 2, 3),
+(12, 37, 240,  "screw_drivers ", 10, 7),
+(13, 40, 234,  "drills ", 14, 11),
+(14, 38, 238,  "alluminium ", 14, 3),
+(15, 34, 238,  "pipes ", 11, 6),
+(16, 36, 240,  "masks ", 0, 3),
+(17, 39, 236,  "gloves ", 11, 10),
+(18, 34, 234,  "safety_boots ", 1, 11);
+
+
+
+
+
+---Populate invoices table
+/*  */
+
+INSERT INTO invoices VALUES
+(571, 33, 12, "2019-06-13"),
+(572, 37, 2, "2019-07-25"),
+(573, 40, 17, "2020-08-05"),
+(574, 36, 14, "2019-06-11"),
+(575, 38, 13, "2020-01-22"),
+(576, 39, 15, "2019-07-30"),
+(577, 32, 7, "2020-04-17"),
+(578, 37, 9, "2019-05-30"),
+(579, 34, 7, "2019-10-11"),
+(580, 37, 1, "2019-06-13");
+
+
